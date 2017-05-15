@@ -27,10 +27,10 @@ function makeProds () {
     var petSweep = new Prod( 'pet-sweep', 'img/pet-sweep-ed.jpg', 'A pet sweep' );
     var scissors = new Prod( 'scissors', 'img/scissors-ed.jpg', 'A scissors' );
     var shark = new Prod( 'shark', 'img/shark-ed.jpg', 'A shark' );
-    var sweep = new Prod( 'sweep', 'img/sweep-ed.jpg', 'A sweep' );
+    var sweep = new Prod( 'sweep', 'img/sweep-ed.png', 'A sweep' );
     var tauntaun = new Prod( 'tauntaun', 'img/tauntaun-ed.jpg', 'A tauntaun' );
     var unicorn = new Prod( 'unicorn', 'img/unicorn-ed.jpg', 'A unicorn' );
-    var usb = new Prod( 'usb', 'img/usb-ed.jpg', 'A usb' );
+    var usb = new Prod( 'usb', 'img/usb-ed.gif', 'A usb' );
     var waterCan = new Prod( 'water-can', 'img/water-can-ed.jpg', 'A water can' );
     var wineGlass = new Prod( 'wine-glass', 'img/wine-glass-ed.jpg', 'A wine glass' );
 }
