@@ -1,13 +1,16 @@
 'use strict';
 
+// TODO: use the description
+
 var allProds = [];
+var selections = [];
 
 function Prod ( id, path, desc ) {
     this.id = id;
-    this.path = '<img src="' + path + '">';
+    this.path = '<img id="' + id + '" src="' + path + '">';
     this.desc = desc;
     this.clicks = 0;
-    this.timesShown = 0;
+    this.shows = 0;
 
     allProds.push( this );
 }
@@ -40,7 +43,7 @@ var counter = {
     choice2: document.getElementsByClassName( 'choice' )[1],
     choice3: document.getElementsByClassName( 'choice' )[2],
 
-    imageWrapper: document.getElementById( 'image-wrapper' ),
+    imageWrapper: document.getElementsByClassName( 'image-wrapper' )[0],
     clicks: 0,
 
     randomIndex: function ( arr ) {
@@ -49,16 +52,23 @@ var counter = {
 
     // A method of the counter object that creates an array of the images clicked and adds the image clicked if it isn't already in the array
     getIndices: function( arr ) {
-        var selections = [];
+        console.log('The three images shown in the last impression were: ' + selections); 
+        var lastThree = [ selections[0] , selections[1] , selections[2] ];
+
+        selections = [];
         while ( selections.length < 3 ) {
             var imageChoice = this.randomIndex( arr );
 
-            if ( selections.indexOf( imageChoice ) === -1 ) {
+            if ( imageChoice === lastThree[0] || imageChoice === lastThree[1] || imageChoice === lastThree[2] ) {
+                imageChoice = this.randomIndex( arr );
+            } else if ( selections.indexOf( imageChoice ) === -1 ) {
                 selections.push( imageChoice );
+                allProds[imageChoice].shows += 1;              
             }
         }
-
-        return selections;
+        
+        // console.log('The three images shown in this impression were: ' + selections);               
+        return selections;        
     },
 
     // Get three random choices and display them on the document
@@ -73,9 +83,9 @@ var counter = {
         var img2 = allProds[display2];
         var img3 = allProds[display3];
 
-        this.choice1.id = img1.id;
-        this.choice2.id = img2.id;
-        this.choice3.id = img3.id;
+        // this.choice1.id = img1.id;
+        // this.choice2.id = img2.id;
+        // this.choice3.id = img3.id;
         
         this.choice1.innerHTML = img1.path;
         this.choice2.innerHTML = img2.path;
@@ -86,14 +96,19 @@ var counter = {
         this.choice3.desc = img3.desc;
     },
     
-    clickCount: function ( id ) {
-        this.clicks +=1;
+    clickCount: function ( targetId ) {
+        this.clicks +=1;                                // Count the number of total clicks that have occurred
+        
+        for ( var i = 0; i < allProds.length; i++ ) {
+            var product = allProds[i];
 
-        allProds.forEach( function addClicks ( product ) {
-            if ( product.id === id ) {
-                product.clicks += 1;
+            if ( product.id === targetId ) {
+                product.clicks += 1 ;
+                console.log(targetId, 'has received', product.clicks, 'clicks so far');
             }
-        });
+            // percentClicked = 
+        }
+
 
         if ( this.clicks > 25 ) {
             this.showResults();
@@ -102,18 +117,51 @@ var counter = {
 
     showResults: function () {
         this.imageWrapper.removeEventListener( 'click', clickHandler );
+        console.log(allProds[0].shows);
         console.table( allProds );
+
+        var sectionEl = document.getElementsByTagName('section')[0];
+            sectionEl.innerHTML = '';
+
+        for ( var j = 0; j < allProds.length; j ++ ) {
+            var text = 'Number of times ' + allProds[j].id + ' was shown: ' + allProds[j].clicks + '. Percentage of times it was clicked when shown: ' + (100 * ( allProds[j].clicks / allProds[j].shows)) + '%.';
+            console.log(text);
+            
+            var listEl = document.createElement('ul');
+            var liEl = document.createElement('li');
+            liEl.innerHTML = text;
+
+            listEl.appendChild(liEl);
+            sectionEl.appendChild(listEl);
+
+
+            // sectionEl.appendChild('ul');
+            // var ulEl = document.getElementsByTagName('ul');
+            // ulEl.appendChild('li');
+            // var liEl = document.getElementsByTagName('li');
+            // liEl.innerText(text);
+
+            // // Helper function to create cells by row
+            // function render ( cellType, content, rowToAddChildTo ) {
+            //     var cell = document.createElement( cellType );
+            //     cell.innerText = content;
+            //     rowToAddChildTo.appendChild( cell );
+
+        }
+
     }
 };
 
 counter.imageWrapper.addEventListener( 'click', clickHandler );
 
 function clickHandler() {
-    if ( event.target.id !== 'image-wrapper' ) {
+    if ( event.target.id ) {
         counter.clickCount( event.target.id );
         counter.displayOptions();
     }
 }
 
+
 makeProds();
 counter.displayOptions();
+
