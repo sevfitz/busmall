@@ -1,5 +1,7 @@
 'use strict';
 
+console.log(Chart);
+
 // TODO: use the description
 
 var allProds = [];
