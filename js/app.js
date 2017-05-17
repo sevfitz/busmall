@@ -2,7 +2,7 @@
 
 console.log(Chart);
 
-// TODO: use the description
+// TODO: use the description, click on figures, use img.source for links
 
 var allProds = [];
 var selections = [];
@@ -55,7 +55,7 @@ var counter = {
     // A method of the counter object that creates an array of the images clicked and adds the image clicked if it isn't already in the array
     getIndices: function( arr ) {
         console.log('The three images shown in the last impression were: ' + selections); 
-        var lastThree = [ selections[0] , selections[1] , selections[2] ];
+        var lastThree = selections;
 
         selections = [];
         while ( selections.length < 3 ) {
@@ -64,7 +64,7 @@ var counter = {
             if ( imageChoice === lastThree[0] || imageChoice === lastThree[1] || imageChoice === lastThree[2] ) {
                 imageChoice = this.randomIndex( arr );
             } else if ( selections.indexOf( imageChoice ) === -1 ) {
-                selections.push( imageChoice );
+	        selections.push( imageChoice );
                 allProds[imageChoice].shows += 1;              
             }
         }
@@ -108,7 +108,6 @@ var counter = {
                 product.clicks += 1 ;
                 console.log(targetId, 'has received', product.clicks, 'clicks so far');
             }
-            // percentClicked = 
         }
 
 
@@ -119,40 +118,59 @@ var counter = {
 
     showResults: function () {
         this.imageWrapper.removeEventListener( 'click', clickHandler );
-        console.log(allProds[0].shows);
-        console.table( allProds );
+        // console.log(allProds[0].shows);
+        // console.table( allProds );
 
+        // clear out the image section when voting is done
         var sectionEl = document.getElementsByTagName('section')[0];
             sectionEl.innerHTML = '';
 
+        // Make arrays to hold all the data, for use in chart
+        var prodLabels = [];                     // will push imgLabels into this
+        var voteTotals = [];                     // will push raw votes into this
+
+
         for ( var j = 0; j < allProds.length; j ++ ) {
-            var text = 'Number of times ' + allProds[j].id + ' was shown: ' + allProds[j].clicks + '. Percentage of times it was clicked when shown: ' + (100 * ( allProds[j].clicks / allProds[j].shows)) + '%.';
-            console.log(text);
-            
-            var listEl = document.createElement('ul');
-            var liEl = document.createElement('li');
-            liEl.innerHTML = text;
-
-            listEl.appendChild(liEl);
-            sectionEl.appendChild(listEl);
-
-
-            // sectionEl.appendChild('ul');
-            // var ulEl = document.getElementsByTagName('ul');
-            // ulEl.appendChild('li');
-            // var liEl = document.getElementsByTagName('li');
-            // liEl.innerText(text);
-
-            // // Helper function to create cells by row
-            // function render ( cellType, content, rowToAddChildTo ) {
-            //     var cell = document.createElement( cellType );
-            //     cell.innerText = content;
-            //     rowToAddChildTo.appendChild( cell );
-
+            var imgLabel = allProds[j].id;
+            prodLabels.push( imgLabel );
+            var imgClicks = allProds[j].clicks;
+            voteTotals.push( imgClicks );
+            // var percClickd = (100 * ( allProds[j].clicks / allProds[j].shows));
         }
 
-    }
-};
+        // Make a chart of the results
+        var canvas = document.getElementsByTagName( 'canvas' );
+
+        var votingResults = new Chart ( canvas, {
+            type: 'bar',
+            data: {
+                labels: prodLabels,    
+                datasets: [
+                    {
+                        label: 'Number of Votes',
+                        data: voteTotals
+                }]
+            },
+            options: {
+                responsive: false,
+                maintainAspectRatio: true
+            }
+        });
+        
+        // // display a list of the results (old version)
+        // for ( var j = 0; j < allProds.length; j ++ ) {
+        //     var text = 'Number of times ' + allProds[j].id + ' was shown: ' + allProds[j].clicks + '. Percentage of times it was clicked when shown: ' + (100 * ( allProds[j].clicks / allProds[j].shows)) + '%.';
+        //     console.log(text);
+            
+        //     var listEl = document.createElement('ul');
+        //     var liEl = document.createElement('li');
+        //     liEl.innerHTML = text;
+
+        //     listEl.appendChild(liEl);
+        //     sectionEl.appendChild(listEl);
+
+    }           // end of Show Results
+};              // end of counter
 
 counter.imageWrapper.addEventListener( 'click', clickHandler );
 
