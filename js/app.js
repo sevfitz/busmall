@@ -61,7 +61,7 @@ var counter = {
         while ( selections.length < 3 ) {
             var imageChoice = this.randomIndex( arr );
 
-            if ( imageChoice === lastThree[0] || imageChoice === lastThree[1] || imageChoice === lastThree[2] ) {
+            if ( lastThree.indexOf( imageChoice ) !== -1 ) {
                 imageChoice = this.randomIndex( arr );
             } else if ( selections.indexOf( imageChoice ) === -1 ) {
 	        selections.push( imageChoice );
