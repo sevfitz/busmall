@@ -27,7 +27,7 @@ function makeProds () {
     var chair = new Prod( 'chair', 'img/chair-ed.jpg', 'A chair' );
     var cthulhu = new Prod( 'cthulhu', 'img/cthulhu-ed.jpg', 'A cthulhu' );
     var dogDuck = new Prod( 'dog-duck', 'img/dog-duck-ed.jpg', 'A Dog Duck' );
-    var dragon = new Prod( 'dragon', 'img/dragon-ed.jpg', 'A dragon' );
+    var dragon = new Prod( 'dragon', 'img/dragon-ed.png', 'A dragon' );
     var pen = new Prod( 'pen', 'img/pen-ed.jpg', 'A pen' );
     var petSweep = new Prod( 'pet-sweep', 'img/pet-sweep-ed.jpg', 'A pet sweep' );
     var scissors = new Prod( 'scissors', 'img/scissors-ed.jpg', 'A scissors' );
