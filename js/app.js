@@ -126,8 +126,8 @@ var counter = {
             sectionEl.innerHTML = '';
 
         // Make arrays to hold all the data, for use in chart
-        var prodLabels = [];                                    // will push imgLabels into this
-        var voteTotals = [];                                    // will push raw votes into this
+        var prodLabels = [];                     // will push imgLabels into this
+        var voteTotals = [];                     // will push raw votes into this
 
 
         for ( var j = 0; j < allProds.length; j ++ ) {

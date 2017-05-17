@@ -31,30 +31,22 @@ section {
 img {
     max-height: 300px;
     max-width: 300px;
-    margin: 0;
-    padding: 10%;
+    min-width: 300px;
 }
 
 .image-wrapper {
     margin: 250px 0;
-    /*width: 600px;
-    height: 400px;*/
+    width: 600px;
+    height: 400px;
     padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
 }
 
-.choice {
-    background-color: white;
-    padding: 0;
-}
-
-.image-wrapper figure {
-    height: fit-content;
-    width: fit-content;
-    background-color: blue;
-    padding: 0;
+figure.choice {
+    display: flex;
+    align-items: center;
 }
 
 
