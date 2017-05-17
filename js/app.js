@@ -151,7 +151,10 @@ var counter = {
                         data: voteTotals
                 }]
             },
-            options: {}
+            options: {
+                responsive: false,
+                maintainAspectRatio: true
+            }
         });
         
         // // display a list of the results (old version)

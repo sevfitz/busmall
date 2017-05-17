@@ -20,8 +20,6 @@ header {
 footer {
     width: 100%;
     height: 100px;
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    color: #4F345A;
     background-color: #D2E1D7;
     border-top: 2px solid #9CBFA7;
 }
@@ -33,13 +31,15 @@ section {
 img {
     max-height: 300px;
     max-width: 300px;
-    margin: auto auto;
+    margin: 0;
+    padding: 10%;
 }
 
 .image-wrapper {
     margin: 250px 0;
-    width: 700px;
-    height: 400px;
+    /*width: 600px;
+    height: 400px;*/
+    padding: 0;
     display: flex;
     flex-direction: row;
     justify-content: flex-start;
@@ -51,14 +51,16 @@ img {
 }
 
 .image-wrapper figure {
-    height: 400px;
-    width: 500px;
+    height: fit-content;
+    width: fit-content;
     background-color: blue;
+    padding: 0;
 }
 
-canvas {
-    /*display: none;*/
-    height: 400px;
-    width: auto;
-    margin: 300px 0 0 0;
+
+canvas.chart {
+    margin: 200px 0 0 0;
+    padding: 50px;
+    width: 800px;
+    height: auto;
 }
