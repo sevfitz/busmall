@@ -56,6 +56,7 @@ var counter = {
     imageWrapper: document.getElementsByClassName( 'image-wrapper' )[0],
     clicks: 0,
 	restartVoting: document.getElementsByTagName( 'section' )[0],
+    resetTotals: document.getElementsByTagName( 'button' )[1],
 
     randomIndex: function ( arr ) {
         return Math.floor(Math.random() * arr.length );
@@ -119,7 +120,7 @@ var counter = {
         }
 
 
-        if ( this.clicks > 25 ) {
+        if ( this.clicks > 3 ) {
             this.showResults();
         }
     },
@@ -142,28 +143,32 @@ var counter = {
             prodLabels.push( imgLabel );
             var imgClicks = allProds[j].clicks;
             voteTotals.push( imgClicks );
+            
             // user.userVotes.push( imgClicks );
             // var percClickd = (100 * ( allProds[j].clicks / allProds[j].shows));
 
         }
 
         var savedTotals = JSON.parse( localStorage.getItem( 'voteTotals' ) ) || [];
-        if ( savedTotals ) {
+        if ( savedTotals.length > 0 ) {
+            console.log('savedTotals if statement voteTotals:',voteTotals);
             for ( var i = 0; i < voteTotals.length; i ++ ) {
             voteTotals[i] += savedTotals[i];
             }
         }
 
         // Add the data to local storage
+        console.log('before we set local storage items:', voteTotals);
         localStorage.setItem( 'voteTotals', JSON.stringify( voteTotals ) );
 
         
         
 
         // Make a chart of the results
-        var canvas = document.getElementsByTagName( 'canvas' );
 
-        var votingResults = new Chart ( canvas, {
+        var canvas = document.getElementsByTagName( 'canvas' );
+        
+        this.votingResults = new Chart ( canvas, {
             type: 'bar',
             data: {
                 labels: prodLabels,    
@@ -171,10 +176,12 @@ var counter = {
                     {
                         label: 'Number of Votes',
                         data: voteTotals
-                }]
+                    }
+                    
+                ]
             },
             options: {
-                responsive: false,
+                responsive: true,
                 maintainAspectRatio: true
             }
         });
@@ -197,8 +204,19 @@ function restartVotingHandler() {
     sectionEl.style = 'display: block';
     var bannerEl = document.getElementsByClassName('restartBanner')[0];
     bannerEl.style = 'display: none';
+    counter.votingResults.destroy();
     counter.clicks = 0;
+    allProds.forEach( function( product ) {
+        product.clicks = 0;
+    });
     counter.displayOptions();
+}
+
+counter.resetTotals.addEventListener( 'click', resetTotalsHandler );
+
+function resetTotalsHandler() {
+    localStorage.clear();
+    restartVotingHandler();
 }
 
 makeProds();

@@ -53,8 +53,8 @@ figure.choice {
 canvas.chart {
     margin: 200px 0 0 0;
     padding: 50px;
-    width: 800px;
-    height: auto;
+    max-width: 800px;
+    max-height: 400px;
 }
 
 .restartVoting {
@@ -72,4 +72,8 @@ canvas.chart {
     margin: 250px 0 0 0;
     background-color: #491468;
     
+}
+
+footer button {
+    color: red;
 }
