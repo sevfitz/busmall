@@ -8,7 +8,7 @@ var imagesToDisplay = [];
 
 function Prod ( id, path, desc ) {
     this.id = id;
-    this.path = '<img id="' + id + '" src="' + path + '">';
+    this.path = '<img id="' + id + '" src="' + path + '"><figcaption id="' + id + '">' + desc + '</figcaption>';
     this.desc = desc;
     this.votes = 0;
     this.shows = 0;
@@ -57,9 +57,10 @@ var counter = {
     bannerEl: document.getElementsByClassName('restartBanner')[0],
 
     imageWrapperEl: document.getElementsByClassName( 'image-wrapper' )[0],
-    votes: 0,
 	restartVotingButtonBanner: document.getElementsByTagName( 'section' )[0],
     resetTotalsButton: document.getElementsByTagName( 'button' )[1],
+    votes: 0,
+
 
     getRandomImage: function ( arr ) {
         return Math.floor(Math.random() * arr.length );
@@ -119,7 +120,6 @@ var counter = {
                 product.votes += 1 ;
             }
         }
-
 
         if ( this.votes > 3 ) {
             this.showResults();
