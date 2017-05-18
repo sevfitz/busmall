@@ -34,6 +34,18 @@ img {
     min-width: 300px;
 }
 
+figcaption {
+    position: relative;
+    min-width: 300px;
+    min-height: 30px;
+    left: -300px;
+    bottom: -200px;
+    display: inline;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    color: #4F345A;
+}
+
 .image-wrapper {
     margin: 250px 0;
     width: 600px;
@@ -47,6 +59,7 @@ img {
 figure.image {
     display: flex;
     align-items: center;
+    max-width: 300px;
 }
 
 

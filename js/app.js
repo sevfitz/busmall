@@ -26,26 +26,26 @@ function Prod ( id, path, desc ) {
 // }
 
 function makeProds () {
-    var bag = new Prod( 'bag', 'img/bag-ed.jpg', 'A Bag' );
-    var banana = new Prod( 'banana', 'img/banana-ed.jpg', 'A Banana Slicer' );
-    var bathroom = new Prod( 'bathroom', 'img/bathroom-ed.jpg', 'A bathroom' );
-    var boots = new Prod( 'boots', 'img/boots-ed.jpg', 'A boots' );
-    var breakfast = new Prod( 'breakfast', 'img/breakfast-ed.jpg', 'A breakfast' );
-    var bubblegum = new Prod( 'bubblegum', 'img/bubblegum-ed.jpg', 'A bubblegum' );
-    var chair = new Prod( 'chair', 'img/chair-ed.jpg', 'A chair' );
-    var cthulhu = new Prod( 'cthulhu', 'img/cthulhu-ed.jpg', 'A cthulhu' );
-    var dogDuck = new Prod( 'dog-duck', 'img/dog-duck-ed.jpg', 'A Dog Duck' );
-    var dragon = new Prod( 'dragon', 'img/dragon-ed.png', 'A dragon' );
-    var pen = new Prod( 'pen', 'img/pen-ed.jpg', 'A pen' );
-    var petSweep = new Prod( 'pet-sweep', 'img/pet-sweep-ed.jpg', 'A pet sweep' );
-    var scissors = new Prod( 'scissors', 'img/scissors-ed.jpg', 'A scissors' );
-    var shark = new Prod( 'shark', 'img/shark-ed.jpg', 'A shark' );
-    var sweep = new Prod( 'sweep', 'img/sweep-ed.png', 'A sweep' );
-    var tauntaun = new Prod( 'tauntaun', 'img/tauntaun-ed.jpg', 'A tauntaun' );
-    var unicorn = new Prod( 'unicorn', 'img/unicorn-ed.jpg', 'A unicorn' );
-    var usb = new Prod( 'usb', 'img/usb-ed.gif', 'A usb' );
-    var waterCan = new Prod( 'water-can', 'img/water-can-ed.jpg', 'A water can' );
-    var wineGlass = new Prod( 'wine-glass', 'img/wine-glass-ed.jpg', 'A wine glass' );
+    var bag = new Prod( 'bag', 'img/bag-ed.jpg', 'Star Wars Rolling Bag' );
+    var banana = new Prod( 'banana', 'img/banana-ed.jpg', 'Banana Slicer' );
+    var bathroom = new Prod( 'bathroom', 'img/bathroom-ed.jpg', 'Toilet Paper/iPad Holder' );
+    var boots = new Prod( 'boots', 'img/boots-ed.jpg', 'Boots Missing Toes' );
+    var breakfast = new Prod( 'breakfast', 'img/breakfast-ed.jpg', 'Breakfast Maker' );
+    var bubblegum = new Prod( 'bubblegum', 'img/bubblegum-ed.jpg', 'Meatball Bubblegum' );
+    var chair = new Prod( 'chair', 'img/chair-ed.jpg', 'Convex Chair' );
+    var cthulhu = new Prod( 'cthulhu', 'img/cthulhu-ed.jpg', 'Cthulhu Toy' );
+    var dogDuck = new Prod( 'dog-duck', 'img/dog-duck-ed.jpg', 'Duck-Bill Dog Muzzle' );
+    var dragon = new Prod( 'dragon', 'img/dragon-ed.png', 'Dragon Meat' );
+    var pen = new Prod( 'pen', 'img/pen-ed.jpg', 'Plastic Utensil Pen Caps' );
+    var petSweep = new Prod( 'pet-sweep', 'img/pet-sweep-ed.jpg', 'Pet Sweep' );
+    var scissors = new Prod( 'scissors', 'img/scissors-ed.jpg', 'Pizza Scissors' );
+    var shark = new Prod( 'shark', 'img/shark-ed.jpg', 'Shark Sleeping Bag' );
+    var sweep = new Prod( 'sweep', 'img/sweep-ed.png', 'Baby Sweep' );
+    var tauntaun = new Prod( 'tauntaun', 'img/tauntaun-ed.jpg', 'Tauntaun Sleeping Bag' );
+    var unicorn = new Prod( 'unicorn', 'img/unicorn-ed.jpg', 'Unicorn Meat' );
+    var usb = new Prod( 'usb', 'img/usb-ed.gif', 'Green Tentacle USB' );
+    var waterCan = new Prod( 'water-can', 'img/water-can-ed.jpg', 'Backwards Watering Can' );
+    var wineGlass = new Prod( 'wine-glass', 'img/wine-glass-ed.jpg', 'Egg-Cup Wine Glass' );
 }
 
 var counter = {
@@ -85,13 +85,13 @@ var counter = {
         return imagesToDisplay;        
     },
 
-    // Get three random choices and display them on the document
+    // Get three random images and display them on the document
     displayOptions: function () {
-        var randomChoice = this.getIndices( allProds );
+        var randomImage = this.getIndices( allProds );
         
-        var display1 = randomChoice[0];
-        var display2 = randomChoice[1];
-        var display3 = randomChoice[2];
+        var display1 = randomImage[0];
+        var display2 = randomImage[1];
+        var display3 = randomImage[2];
 
         var img1 = allProds[display1];
         var img2 = allProds[display2];
