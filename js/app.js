@@ -3,14 +3,14 @@
 // TODO: use the description, click on figures, use img.source for links
 
 var allProds = [];
-var selections = [];
+var imagesToDisplay = [];
 // var allUsers = [];
 
 function Prod ( id, path, desc ) {
     this.id = id;
     this.path = '<img id="' + id + '" src="' + path + '">';
     this.desc = desc;
-    this.clicks = 0;
+    this.votes = 0;
     this.shows = 0;
 
     allProds.push( this );
@@ -49,38 +49,39 @@ function makeProds () {
 }
 
 var counter = {
-    choice1: document.getElementsByClassName( 'choice' )[0],
-    choice2: document.getElementsByClassName( 'choice' )[1],
-    choice3: document.getElementsByClassName( 'choice' )[2],
+    image1El: document.getElementsByClassName( 'image' )[0],
+    image2El: document.getElementsByClassName( 'image' )[1],
+    image3El: document.getElementsByClassName( 'image' )[2],
 
-    imageWrapper: document.getElementsByClassName( 'image-wrapper' )[0],
-    clicks: 0,
-	restartVoting: document.getElementsByTagName( 'section' )[0],
-    resetTotals: document.getElementsByTagName( 'button' )[1],
+    sectionEl: document.getElementsByTagName('section')[1],
+    bannerEl: document.getElementsByClassName('restartBanner')[0],
 
-    randomIndex: function ( arr ) {
+    imageWrapperEl: document.getElementsByClassName( 'image-wrapper' )[0],
+    votes: 0,
+	restartVotingButtonBanner: document.getElementsByTagName( 'section' )[0],
+    resetTotalsButton: document.getElementsByTagName( 'button' )[1],
+
+    getRandomImage: function ( arr ) {
         return Math.floor(Math.random() * arr.length );
     },
 
-    // A method of the counter object that creates an array of the images clicked and adds the image clicked if it isn't already in the array
+    // A method of the counter object that creates an array of the images 
+    // clicked and adds the image clicked if it isn't already in the array
     getIndices: function( arr ) {
-        // console.log('The three images shown in the last impression were: ' + selections); 
-        var lastThree = selections;
+        var lastThreeImages = imagesToDisplay;
 
-        selections = [];
-        while ( selections.length < 3 ) {
-            var imageChoice = this.randomIndex( arr );
+        imagesToDisplay = [];
+        while ( imagesToDisplay.length < 3 ) {
+            var imageChoice = this.getRandomImage( arr );
 
-            if ( lastThree.indexOf( imageChoice ) !== -1 ) {
-                imageChoice = this.randomIndex( arr );
-            } else if ( selections.indexOf( imageChoice ) === -1 ) {
-	        selections.push( imageChoice );
+            if ( lastThreeImages.indexOf( imageChoice ) !== -1 ) {
+                imageChoice = this.getRandomImage( arr );
+            } else if ( imagesToDisplay.indexOf( imageChoice ) === -1 ) {
+	        imagesToDisplay.push( imageChoice );
                 allProds[imageChoice].shows += 1;              
             }
         }
-        
-        // console.log('The three images shown in this impression were: ' + selections);               
-        return selections;        
+        return imagesToDisplay;        
     },
 
     // Get three random choices and display them on the document
@@ -95,44 +96,40 @@ var counter = {
         var img2 = allProds[display2];
         var img3 = allProds[display3];
 
-        // this.choice1.id = img1.id;
-        // this.choice2.id = img2.id;
-        // this.choice3.id = img3.id;
+        // this.image1El.id = img1.id;
+        // this.image2El.id = img2.id;
+        // this.image3El.id = img3.id;
         
-        this.choice1.innerHTML = img1.path;
-        this.choice2.innerHTML = img2.path;
-        this.choice3.innerHTML = img3.path;
+        this.image1El.innerHTML = img1.path;
+        this.image2El.innerHTML = img2.path;
+        this.image3El.innerHTML = img3.path;
 
-        this.choice1.desc = img1.desc;
-        this.choice2.desc = img2.desc;
-        this.choice3.desc = img3.desc;
+        this.image1El.desc = img1.desc;
+        this.image2El.desc = img2.desc;
+        this.image3El.desc = img3.desc;
     },
 
     clickCount: function ( targetId ) {
-        this.clicks +=1;                         // Count the number of total clicks that have occurred
+        this.votes +=1;                         // Count the number of total votes that have occurred
         
         for ( var i = 0; i < allProds.length; i++ ) {
             var product = allProds[i];
 
             if ( product.id === targetId ) {
-                product.clicks += 1 ;
+                product.votes += 1 ;
             }
         }
 
 
-        if ( this.clicks > 3 ) {
+        if ( this.votes > 3 ) {
             this.showResults();
         }
     },
 
     showResults: function () {
-        // this.imageWrapper.removeEventListener( 'click', clickHandler );
-
         // Replace the image section with a banner and button when voting is done
-        var sectionEl = document.getElementsByTagName('section')[1];
-        sectionEl.style = 'display: none';
-        var bannerEl = document.getElementsByClassName('restartBanner')[0];
-        bannerEl.style = 'display: block';
+        counter.sectionEl.style = 'display: none';
+        counter.bannerEl.style = 'display: block';
 
         // Make arrays to hold all the data, for use in chart
         var prodLabels = [];                     // will push imgLabels into this
@@ -141,34 +138,29 @@ var counter = {
         for ( var j = 0; j < allProds.length; j ++ ) {
             var imgLabel = allProds[j].id;
             prodLabels.push( imgLabel );
-            var imgClicks = allProds[j].clicks;
-            voteTotals.push( imgClicks );
+            var imgVotes = allProds[j].votes;
+            voteTotals.push( imgVotes );
             
-            // user.userVotes.push( imgClicks );
-            // var percClickd = (100 * ( allProds[j].clicks / allProds[j].shows));
+            // user.userVotes.push( imgVotes );
+            // var percClickd = (100 * ( allProds[j].votes / allProds[j].shows));
 
         }
 
         var savedTotals = JSON.parse( localStorage.getItem( 'voteTotals' ) ) || [];
         if ( savedTotals.length > 0 ) {
-            console.log('savedTotals if statement voteTotals:',voteTotals);
             for ( var i = 0; i < voteTotals.length; i ++ ) {
             voteTotals[i] += savedTotals[i];
             }
         }
 
         // Add the data to local storage
-        console.log('before we set local storage items:', voteTotals);
         localStorage.setItem( 'voteTotals', JSON.stringify( voteTotals ) );
-
-        
-        
 
         // Make a chart of the results
 
-        var canvas = document.getElementsByTagName( 'canvas' );
+        var canvasEl = document.getElementsByTagName( 'canvas' );
         
-        this.votingResults = new Chart ( canvas, {
+        this.votingResults = new Chart ( canvasEl, {
             type: 'bar',
             data: {
                 labels: prodLabels,    
@@ -185,10 +177,10 @@ var counter = {
                 maintainAspectRatio: true
             }
         });
-    }           // end of Show Results
-};              // end of counter
+    }           
+};              
 
-counter.imageWrapper.addEventListener( 'click', clickHandler );
+counter.imageWrapperEl.addEventListener( 'click', clickHandler );
 
 function clickHandler() {
     if ( event.target.id ) {
@@ -197,22 +189,20 @@ function clickHandler() {
     }
 }
 
-counter.restartVoting.addEventListener( 'click', restartVotingHandler );
+counter.restartVotingButtonBanner.addEventListener( 'click', restartVotingHandler );
 
 function restartVotingHandler() {        
-    var sectionEl = document.getElementsByTagName('section')[1];
-    sectionEl.style = 'display: block';
-    var bannerEl = document.getElementsByClassName('restartBanner')[0];
-    bannerEl.style = 'display: none';
+    counter.sectionEl.style = 'display: block';
+    counter.bannerEl.style = 'display: none';
     counter.votingResults.destroy();
-    counter.clicks = 0;
+    counter.votes = 0;
     allProds.forEach( function( product ) {
-        product.clicks = 0;
+        product.votes = 0;
     });
     counter.displayOptions();
 }
 
-counter.resetTotals.addEventListener( 'click', resetTotalsHandler );
+counter.resetTotalsButton.addEventListener( 'click', resetTotalsHandler );
 
 function resetTotalsHandler() {
     localStorage.clear();
