@@ -56,3 +56,20 @@ canvas.chart {
     width: 800px;
     height: auto;
 }
+
+.restartVoting {
+    margin: 0 38%;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 30px;
+    height: 50px;
+    width: 300px;
+}
+
+.restartBanner {
+    display: none;
+    width: 1300px;
+    height: 50px;
+    margin: 250px 0 0 0;
+    background-color: #491468;
+    
+}

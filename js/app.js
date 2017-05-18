@@ -1,11 +1,10 @@
 'use strict';
 
-console.log(Chart);
-
 // TODO: use the description, click on figures, use img.source for links
 
 var allProds = [];
 var selections = [];
+// var allUsers = [];
 
 function Prod ( id, path, desc ) {
     this.id = id;
@@ -16,6 +15,15 @@ function Prod ( id, path, desc ) {
 
     allProds.push( this );
 }
+
+// function User ( userVotes ) {
+//     this.userVotes = userVotes;
+    
+//     allUsers.push( this );
+
+    
+
+// }
 
 function makeProds () {
     var bag = new Prod( 'bag', 'img/bag-ed.jpg', 'A Bag' );
@@ -47,6 +55,7 @@ var counter = {
 
     imageWrapper: document.getElementsByClassName( 'image-wrapper' )[0],
     clicks: 0,
+	restartVoting: document.getElementsByTagName( 'section' )[0],
 
     randomIndex: function ( arr ) {
         return Math.floor(Math.random() * arr.length );
@@ -54,7 +63,7 @@ var counter = {
 
     // A method of the counter object that creates an array of the images clicked and adds the image clicked if it isn't already in the array
     getIndices: function( arr ) {
-        console.log('The three images shown in the last impression were: ' + selections); 
+        // console.log('The three images shown in the last impression were: ' + selections); 
         var lastThree = selections;
 
         selections = [];
@@ -97,16 +106,15 @@ var counter = {
         this.choice2.desc = img2.desc;
         this.choice3.desc = img3.desc;
     },
-    
+
     clickCount: function ( targetId ) {
-        this.clicks +=1;                                // Count the number of total clicks that have occurred
+        this.clicks +=1;                         // Count the number of total clicks that have occurred
         
         for ( var i = 0; i < allProds.length; i++ ) {
             var product = allProds[i];
 
             if ( product.id === targetId ) {
                 product.clicks += 1 ;
-                console.log(targetId, 'has received', product.clicks, 'clicks so far');
             }
         }
 
@@ -117,26 +125,40 @@ var counter = {
     },
 
     showResults: function () {
-        this.imageWrapper.removeEventListener( 'click', clickHandler );
-        // console.log(allProds[0].shows);
-        // console.table( allProds );
+        // this.imageWrapper.removeEventListener( 'click', clickHandler );
 
-        // clear out the image section when voting is done
-        var sectionEl = document.getElementsByTagName('section')[0];
-            sectionEl.innerHTML = '';
+        // Replace the image section with a banner and button when voting is done
+        var sectionEl = document.getElementsByTagName('section')[1];
+        sectionEl.style = 'display: none';
+        var bannerEl = document.getElementsByClassName('restartBanner')[0];
+        bannerEl.style = 'display: block';
 
         // Make arrays to hold all the data, for use in chart
         var prodLabels = [];                     // will push imgLabels into this
         var voteTotals = [];                     // will push raw votes into this
-
 
         for ( var j = 0; j < allProds.length; j ++ ) {
             var imgLabel = allProds[j].id;
             prodLabels.push( imgLabel );
             var imgClicks = allProds[j].clicks;
             voteTotals.push( imgClicks );
+            // user.userVotes.push( imgClicks );
             // var percClickd = (100 * ( allProds[j].clicks / allProds[j].shows));
+
         }
+
+        var savedTotals = JSON.parse( localStorage.getItem( 'voteTotals' ) ) || [];
+        if ( savedTotals ) {
+            for ( var i = 0; i < voteTotals.length; i ++ ) {
+            voteTotals[i] += savedTotals[i];
+            }
+        }
+
+        // Add the data to local storage
+        localStorage.setItem( 'voteTotals', JSON.stringify( voteTotals ) );
+
+        
+        
 
         // Make a chart of the results
         var canvas = document.getElementsByTagName( 'canvas' );
@@ -156,19 +178,6 @@ var counter = {
                 maintainAspectRatio: true
             }
         });
-        
-        // // display a list of the results (old version)
-        // for ( var j = 0; j < allProds.length; j ++ ) {
-        //     var text = 'Number of times ' + allProds[j].id + ' was shown: ' + allProds[j].clicks + '. Percentage of times it was clicked when shown: ' + (100 * ( allProds[j].clicks / allProds[j].shows)) + '%.';
-        //     console.log(text);
-            
-        //     var listEl = document.createElement('ul');
-        //     var liEl = document.createElement('li');
-        //     liEl.innerHTML = text;
-
-        //     listEl.appendChild(liEl);
-        //     sectionEl.appendChild(listEl);
-
     }           // end of Show Results
 };              // end of counter
 
@@ -181,6 +190,16 @@ function clickHandler() {
     }
 }
 
+counter.restartVoting.addEventListener( 'click', restartVotingHandler );
+
+function restartVotingHandler() {        
+    var sectionEl = document.getElementsByTagName('section')[1];
+    sectionEl.style = 'display: block';
+    var bannerEl = document.getElementsByClassName('restartBanner')[0];
+    bannerEl.style = 'display: none';
+    counter.clicks = 0;
+    counter.displayOptions();
+}
 
 makeProds();
 counter.displayOptions();
