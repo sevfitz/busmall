@@ -32,6 +32,12 @@ img {
     max-height: 300px;
     max-width: 300px;
     min-width: 300px;
+
+    transition: transform 1s ease;
+}
+
+img:hover {
+    transform: scaleX(1.2) scaleY(1.2);
 }
 
 figcaption {
@@ -81,6 +87,21 @@ canvas.pie-chart {
     font-size: 30px;
     height: 50px;
     width: 300px;
+}
+
+.restartBanner:hover {
+    animation: blink .5s ease 0s infinite alternate;
+} 
+
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.5;
+        color: white;
+        background-color: #491468;
+    }
 }
 
 .restartBanner {
