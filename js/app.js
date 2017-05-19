@@ -1,7 +1,5 @@
 'use strict';
 
-// TODO: use the description, click on figures, use img.source for links
-
 var allProds = [];
 var imagesToDisplay = [];
 // var allUsers = [];
@@ -17,12 +15,8 @@ function Prod ( id, path, desc ) {
 }
 
 // function User ( userVotes ) {
-//     this.userVotes = userVotes;
-    
+//     this.userVotes = userVotes; 
 //     allUsers.push( this );
-
-    
-
 // }
 
 function makeProds () {
@@ -96,18 +90,10 @@ var counter = {
         var img1 = allProds[display1];
         var img2 = allProds[display2];
         var img3 = allProds[display3];
-
-        // this.image1El.id = img1.id;
-        // this.image2El.id = img2.id;
-        // this.image3El.id = img3.id;
         
         this.image1El.innerHTML = img1.path;
         this.image2El.innerHTML = img2.path;
         this.image3El.innerHTML = img3.path;
-
-        this.image1El.desc = img1.desc;
-        this.image2El.desc = img2.desc;
-        this.image3El.desc = img3.desc;
     },
 
     clickCount: function ( targetId ) {
@@ -121,7 +107,7 @@ var counter = {
             }
         }
 
-        if ( this.votes > 3 ) {
+        if ( this.votes > 24 ) {
             this.showResults();
         }
     },
@@ -134,40 +120,52 @@ var counter = {
         // Make arrays to hold all the data, for use in chart
         var prodLabels = [];                     // will push imgLabels into this
         var voteTotals = [];                     // will push raw votes into this
+        var percTotals = [];                     // will push percent times clicked
 
         for ( var j = 0; j < allProds.length; j ++ ) {
             var imgLabel = allProds[j].id;
             prodLabels.push( imgLabel );
             var imgVotes = allProds[j].votes;
             voteTotals.push( imgVotes );
-            
-            // user.userVotes.push( imgVotes );
-            // var percClickd = (100 * ( allProds[j].votes / allProds[j].shows));
 
+            var percClickd = (100 * ( voteTotals[j] / this.votes ));
+            percTotals.push( percClickd );
         }
 
         var savedTotals = JSON.parse( localStorage.getItem( 'voteTotals' ) ) || [];
+        var savedPercs = JSON.parse( localStorage.getItem( 'percTotals' ) ) || [];
+        
         if ( savedTotals.length > 0 ) {
             for ( var i = 0; i < voteTotals.length; i ++ ) {
             voteTotals[i] += savedTotals[i];
             }
         }
 
+        if ( savedPercs.length > 0 ) {
+            for ( var k = 0; k < voteTotals.length; k ++ ) {
+            percTotals[k] += savedPercs[k];
+            }
+        }
+
         // Add the data to local storage
         localStorage.setItem( 'voteTotals', JSON.stringify( voteTotals ) );
+        localStorage.setItem( 'percTotals', JSON.stringify( percTotals ) );
 
         // Make a chart of the results
 
-        var canvasEl = document.getElementsByTagName( 'canvas' );
+        var canvasTotalsEl = document.getElementsByClassName( 'totals-chart' );
         
-        this.votingResults = new Chart ( canvasEl, {
+        this.votingResults = new Chart ( canvasTotalsEl, {
             type: 'bar',
             data: {
                 labels: prodLabels,    
                 datasets: [
                     {
                         label: 'Number of Votes',
-                        data: voteTotals
+                        data: voteTotals,
+                        backgroundColor: [
+                            '#4c0a00', '#ff5940', '#f2beb6', '#7f2200', '#99614d', '#a65800', '#4c3213', '#ffc480', '#998773', '#f2a200', '#8c7000', '#fffbbf', '#475900', '#a3bf30', '#3de600', '#53664d', '#269926', '#86b386', '#00330e', '#3df29d', '#40fff2', '#269991', '#bffffb', '#1a5766', '#3399cc'   
+                        ]
                     }
                     
                 ]
@@ -177,6 +175,32 @@ var counter = {
                 maintainAspectRatio: true
             }
         });
+
+        // Make a Pie chart of the Percentages
+
+        var canvasPieEl = document.getElementsByClassName( 'pie-chart' )[0];
+        
+        this.percResults = new Chart ( canvasPieEl, {
+            type: 'pie',
+            data: {
+                labels: prodLabels,    
+                datasets: [
+                    {
+                        label: '% of Times Clicked When Shown',
+                        data: percTotals,
+                        backgroundColor: [
+                            '#4c0a00', '#ff5940', '#f2beb6', '#7f2200', '#99614d', '#a65800', '#4c3213', '#ffc480', '#998773', '#f2a200', '#8c7000', '#fffbbf', '#475900', '#a3bf30', '#3de600', '#53664d', '#269926', '#86b386', '#00330e', '#3df29d', '#40fff2', '#269991', '#bffffb', '#1a5766', '#3399cc'   
+                        ]
+                    }
+                    
+                ]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true
+            }
+        });
+
     }           
 };              
 
@@ -195,6 +219,7 @@ function restartVotingHandler() {
     counter.sectionEl.style = 'display: block';
     counter.bannerEl.style = 'display: none';
     counter.votingResults.destroy();
+    counter.percResults.destroy();
     counter.votes = 0;
     allProds.forEach( function( product ) {
         product.votes = 0;
