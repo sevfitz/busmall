@@ -32,6 +32,24 @@ img {
     max-height: 300px;
     max-width: 300px;
     min-width: 300px;
+
+    transition: transform 1s ease;
+}
+
+img:hover {
+    transform: scaleX(1.2) scaleY(1.2);
+}
+
+figcaption {
+    position: relative;
+    min-width: 300px;
+    min-height: 30px;
+    left: -300px;
+    bottom: -200px;
+    display: inline;
+    font-family: Verdana, Geneva, Tahoma, sans-serif;
+    font-size: 20px;
+    color: #4F345A;
 }
 
 .image-wrapper {
@@ -44,17 +62,23 @@ img {
     justify-content: flex-start;
 }
 
-figure.choice {
+figure.image {
     display: flex;
     align-items: center;
+    max-width: 300px;
 }
 
 
-canvas.chart {
-    margin: 200px 0 0 0;
+canvas.totals-chart {
     padding: 50px;
-    max-width: 800px;
-    max-height: 400px;
+    max-width: 1000px;
+    max-height: 600px;
+}
+
+canvas.pie-chart {
+    padding: 50px;
+    max-width: 600px;
+    max-height: 600px;
 }
 
 .restartVoting {
@@ -65,9 +89,24 @@ canvas.chart {
     width: 300px;
 }
 
+.restartBanner:hover {
+    animation: blink .5s ease 0s infinite alternate;
+} 
+
+@keyframes blink {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0.5;
+        color: white;
+        background-color: #491468;
+    }
+}
+
 .restartBanner {
     display: none;
-    width: 1300px;
+    width: 105%;
     height: 50px;
     margin: 250px 0 0 0;
     background-color: #491468;
